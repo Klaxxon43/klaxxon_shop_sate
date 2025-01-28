@@ -47,6 +47,6 @@ with app.app_context():
 @app.route("/index")
 @app.route("/")
 def index():
-    return render_template("index.html", show_header=True, show_footer=True)
+    return render_template("templates/index.html", show_header=True, show_footer=True)
 
 
