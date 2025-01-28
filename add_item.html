@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}
+Добавление товара
+{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+{% endblock %}
+{% block body %} 
+{% include 'flesh.html' %} 
+<h1 style="margin-top: -100px; ">{{ self.title() }}</h1>
+{% block content %} {% endblock %}
+<div class="form-container" style="margin-top: 270px; margin-left: 45%">
+    <div class="registration-form">
+        <form method="post" enctype="multipart/form-data" class="form-control d-flex flex-column gap-2">
+            {{ form.csrf_token }}
+            {{ form.game (class='form-control', placeholder='Название товара')}}
+            {{ form.category (class='form-control', placeholder='Название товара')}}
+            {{ form.name(class='form-control', placeholder='Название товара') }}
+            {{ form.price(class='form-control', placeholder='Цена') }}
+            {{ form.description(class='form-control', placeholder='Описание') }}
+            {{ form.delivery(class='form-control', placeholder='Способ доставки') }}
+            {{ form.image_url(class='form-control', placeholder='картинка')}} 
+            {{ form.submit(class='btn btn-success') }} 
+        </form>
+    </div>
+</div>
+
+<style>
+        @font-face {
+    font-family: 'Righteous'; /* Название семейства, которое будешь использовать */
+    src: url('{{url_for("static", filename="fonts/ofont.ru_Uncage.ttf")}}') format('truetype'); /* Путь к файлу шрифта */
+    font-weight: normal; /* Укажи weight, если он отличается от normal (400) */
+    font-style: normal; /* Укажи style, если он отличается от normal */
+}
+
+    body {
+        font-family: 'Righteous', sans-serif; /* Используй название семейства */
+    } 
+</style>
+{% endblock %}

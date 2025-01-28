@@ -1,0 +1,104 @@
+<!-- templates/profile.html -->
+
+{% extends 'base.html' %}
+{% block title %}Профиль{% endblock %}
+{% block body %}
+{% include 'flesh.html' %}
+
+<div class="container" style="margin-top: 100px;">
+    <h1>Профиль</h1>
+    <p>Логин: {{ user.login }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Деньги: {{ user.money }} руб.</p>
+
+    <h2>Созданные товары</h2>
+    {% if created_items %}
+    <div class="created-items">
+        {% for item in created_items %}
+        <div class="created-item">
+            <div class="item-image">
+                <img style="width: 325px; height: 225px; margin-top: 20px; border-radius: 10px; margin-left: 10px; border: white 3px solid;" src="{{ url_for('static', filename='img/' + item.image_url) }}" alt="{{ item.name }} ">
+            </div>
+            <div class="item-info">
+                <h2 style="font-size: 50px; margin-left: 10px;">{{ item.name }}</h2>
+                <p style="margin-left: 10px; font-size: 70px;" >{{ item.price }} руб.</p>
+                <p style="margin-left: 78%; margin-top: -13%; font-size: 20px;">{{ item.category }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>Вы не создали ни одного товара.</p>
+    {% endif %}
+</div>
+
+<style>
+/* static/css/styles.css */
+
+@font-face {
+    font-family: 'Righteous'; /* Название семейства, которое будешь использовать */
+    src: url('{{url_for("static", filename="fonts/ofont.ru_Uncage.ttf")}}') format('truetype'); /* Путь к файлу шрифта */
+    font-weight: normal; /* Укажи weight, если он отличается от normal (400) */
+    font-style: normal; /* Укажи style, если он отличается от normal */
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: 'Righteous', sans-serif; /* Используй название семейства */
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.created-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.created-item {
+    display: flex;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Изменено значение на 25px */
+}
+
+.item-image {
+    width: 30%;
+}
+
+.item-image img {
+    width: 100%;
+    height: auto;
+}
+
+.item-info {
+    width: 70%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.item-info h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.item-info p {
+    margin: 5px 0;
+}
+</style>
+{% endblock %}

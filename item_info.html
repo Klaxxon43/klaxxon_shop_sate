@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% block title %}
+170 Гемов
+{% endblock %}
+{% block body %}
+{% include 'flesh.html' %}
+{% block content %} {% endblock %}
+<style>
+    @font-face {
+    font-family: 'Righteous'; /* Название семейства, которое будешь использовать */
+    src: url('{{url_for("static", filename="fonts/ofont.ru_Uncage.ttf")}}') format('truetype'); /* Путь к файлу шрифта */
+    font-weight: normal; /* Укажи weight, если он отличается от normal (400) */
+    font-style: normal; /* Укажи style, если он отличается от normal */
+}
+
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100%; /* Занимает всю высоту экрана */
+        width: 100%;
+        font-family: 'Righteous', sans-serif; /* Используй название семейства */
+    } 
+
+    .container {
+        display: flex;
+        flex: 1;
+        padding: 20px;
+        width: 100%;
+        height: 100%;
+    }
+
+    .image-container {
+        width: 50%;
+        padding-right: 20px; /* Отступ справа */
+        box-sizing: border-box; /* Чтобы padding не увеличивал общую ширину */
+    }
+
+    .image {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .info {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .price, .title, .delivery {
+        margin-bottom: 10px;
+    }
+
+    .description {
+        margin-top: 20px; /* Отступ сверху для описания */
+        width: 50%; /* Ширина описания под фото */
+        padding-right: 20px;
+    }
+
+
+    @media (max-width: 768px) { /* Для мобильных устройств */
+        .container {
+            flex-direction: column; /* Располагаем элементы друг под другом */
+        }
+        .image-container, .info, .description {
+            width: 100%;
+            padding-right: 0; /* Убираем отступ */
+        }
+        .image-container {
+            margin-bottom: 20px;
+        }
+        .description{
+            width: 100%;
+        }
+    }
+
+    .square {
+    width: 650px;
+    height: 170px;
+    border-radius: 5%;
+    background-color: #fbe4c359;
+    border: white 3px solid;
+    cursor: pointer; 
+}
+
+.btnn {
+    padding: 15px 40px 15px 30px; /* Добавлен padding-left: 30px, padding-right: 40px */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    animation: colorTransition 3s linear infinite;
+}
+
+.btn-text {
+    margin-left: 42%;
+}
+
+@keyframes colorTransition {
+    0% {
+        background-color: aqua;
+    }
+    50% {
+        background-color: rgb(43, 243, 106);
+    }
+    100% {
+        background-color: aqua;
+    }
+}
+
+
+</style>
+</head>
+<body>
+
+<div class="container" >
+    <div class="image-container" style="margin-top: 100px;">
+        <!-- <div class="square" id="170gems" style="background-image: url('{{ gems170 }}')"></div>     -->
+        <img class="image" src= {{ url_for('static', filename='img/' + item.image_url) }} alt="Фотография товара">
+    </div>  
+    <div class="info" >
+        <div class="price" style="margin-top: 105px; font-size: 50px;">{{item.price}}    {{item.name}}</div>
+        <div style="margin-left: -10px;" class="square" >
+            <div class="delivery" style="padding: 5px; font-size: 20px;">Способ получения: </div>
+            <h2 style="font-size: 15px; padding-left: 5px; margin-top: -10px; font-size: 25px;" >{{item.delivery}}
+        </div>
+        
+        <a href="#" class="btnn" style="margin-top: 30px;" onclick="addToCart({{ item.id }})">
+            <span class="btn-text">Купить</span>
+        </a>
+    </div>
+</div>
+<div class="description">
+    <h1 style="font-size: 25px; padding-left: 30px;">Описание товара: </h1>
+    <p style="white-space: pre-line; padding-left: 3px; margin-top: -20px;">
+        {{item.description}}
+    </p>
+</div>
+</body>
+
+
+
+<script>
+async function addToCart(itemId) {
+  console.log(`Отправка запроса на добавление товара с ID: ${itemId}`);
+  try {
+    const response = await fetch(`/user/item/${itemId}/buy`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log('Response status:', response.status);
+    console.log('Response headers:', response.headers);
+
+    if (response.ok) { // Успех
+      const data = await response.json();
+      console.log("Товар добавлен в корзину:", data);
+      alert('Товар добавлен в корзину!');
+    } else if (response.status === 404) { // Товар не найден
+      alert('Товар не найден');
+    } else if (response.status === 401) { // Не авторизован
+      alert('Пользователь не авторизован');
+    } else { // Другие ошибки
+      const errorData = await response.json(); // Попробуем получить json, даже если это и не JSON
+      const errorMessage = errorData.message || `Ошибка ${response.status}: ${response.statusText}`;
+      alert(errorMessage);
+    }
+  } catch (error) {
+    console.error("Ошибка при добавлении в корзину:", error);
+    alert('Произошла ошибка. Попробуйте позже.');
+  }
+}
+
+  </script>
+{% endblock %} 

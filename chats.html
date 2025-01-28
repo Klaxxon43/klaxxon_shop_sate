@@ -1,0 +1,306 @@
+<!-- templates/chats.html -->
+{% extends 'base.html' %}
+{% block title %}Чаты{% endblock %}
+{% block body %}
+{% include 'flesh.html' %}
+<div class="container" style="margin-top: 100px;">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="chat-list">
+                <h2>Чаты</h2>
+                <ul>
+                    {% for user in users %}
+                    {% if user.id != current_user.id %}
+                    <li class="{% if creator and user.id == creator.id %}active{% endif %}">
+                        <a href="{{ url_for('user.chat', creator_id=user.id) }}">{{ user.login }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-8">
+            {% if creator %}
+            <div class="chat-header" onclick="showProfile()">
+                <img src="{{ url_for('static', filename='img/' + creator.profile_picture) }}" alt="{{ creator.login }}" class="profile-picture">
+                <span class="profile-name">{{ creator.login }}</span>
+            </div>
+            <div class="chat-box">
+                <div class="messages" id="messages">
+                    {% for message in messages %}
+                    <div class="message {% if message.sender_id == user.id %}sent{% else %}received{% endif %}">
+                        <strong>{{ message.sender.login if message.sender_id == user.id else creator.login }}:</strong> {{ message.content }}
+                        <span class="timestamp">{{ message.timestamp.strftime('%d.%m %H:%M') }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <form id="chat-form" enctype="multipart/form-data">
+                    <input type="text" id="message-input" placeholder="Введите сообщение...">
+                    <input type="file" id="file-input" name="file">
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </form>
+            </div>
+            {% else %}
+            <div class="chat-box">
+                <p>Выберите чат для начала общения</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для профиля пользователя -->
+{% if creator %}
+<div id="profile-modal" class="modal">
+    <div class="modal-content">
+        <span style="margin-left: 95%;" class="close" onclick="closeProfile()">&times;</span>
+        <h2 style="margin-left: 45%;">{{ creator.login }}</h2>
+        <img src="{{ url_for('static', filename='img/' + creator.profile_picture) }}" alt="{{ creator.login }}" class="profile-picture-large">
+        <p>Email: {{ creator.email }}</p>
+        <p>ID: {{ creator.id}}</p>
+        <p>Другие данные профиля...</p>
+        <h3>Товары</h3>
+        <ul>
+            {% for item in creator.items %}
+            <li>
+                <a href="{{ url_for('user.item_info', item_id=item.id) }}">{{ item.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+
+<style>
+/* static/css/styles.css */
+@font-face {
+    font-family: 'Righteous'; /* Название семейства, которое будешь использовать */
+    src: url('{{url_for("static", filename="fonts/ofont.ru_Uncage.ttf")}}') format('truetype'); /* Путь к файлу шрифта */
+    font-weight: normal; /* Укажи weight, если он отличается от normal (400) */
+    font-style: normal; /* Укажи style, если он отличается от normal */
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: 'Righteous', sans-serif; /* Используй название семейства */
+}
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.chat-list {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.chat-list ul {
+    list-style: none;
+    padding: 0;
+}
+.chat-list li {
+    margin-bottom: 10px;
+}
+.chat-list a {
+    text-decoration: none;
+    color: #007bff;
+}
+.chat-list li.active a {
+    font-weight: bold;
+    color: #0056b3;
+}
+.chat-header {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+.profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.profile-name {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.chat-box {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.messages {
+    height: 300px;
+    overflow-y: scroll;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+.message {
+    margin-bottom: 10px;
+    word-wrap: break-word;
+    padding: 10px;
+    border-radius: 5px;
+}
+.message.sent {
+    text-align: right;
+    background-color: #e1ffc7;
+}
+.message.received {
+    text-align: left;
+    background-color: #f1f0f0;
+}
+.timestamp {
+    font-size: 0.8em;
+    color: #888;
+}
+#chat-form {
+    display: flex;
+    flex-direction: column;
+}
+#message-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+#file-input {
+    margin-bottom: 10px;
+}
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.profile-picture-large {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 20px;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chatForm = document.getElementById('chat-form');
+    if (chatForm) {
+        chatForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const messageInput = document.getElementById('message-input');
+            const fileInput = document.getElementById('file-input');
+            const message = messageInput.value;
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('message', message);
+            formData.append('receiver_id', {{ creator.id if creator else 'null' }});
+            if (file) {
+                formData.append('file', file);
+            }
+            if (message.trim() !== '' || file) {
+                fetch('{{ url_for("user.send_message") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const messages = document.getElementById('messages');
+                    const newMessage = document.createElement('div');
+                    newMessage.classList.add('message', 'sent');
+                    newMessage.innerHTML = `<strong>Вы:</strong> ${data.content} <span class="timestamp">${data.timestamp}</span>`;
+                    if (data.file_url) {
+                        newMessage.innerHTML += `<br><a href="${data.file_url}" target="_blank">Скачать файл</a>`;
+                    }
+                    messages.appendChild(newMessage);
+                    messages.scrollTop = messages.scrollHeight;
+                    messageInput.value = '';
+                    fileInput.value = '';
+                })
+                .catch(error => console.error('Ошибка:', error));
+            }
+        });
+    }
+
+    function fetchMessages() {
+        if ({{ 'true' if creator else 'false' }}) {
+            fetch('{{ url_for("user.get_messages", creator_id=creator.id if creator else 0) }}')
+                .then(response => response.json())
+                .then(data => {
+                    const messages = document.getElementById('messages');
+                    messages.innerHTML = '';
+                    data.forEach(message => {
+                        const newMessage = document.createElement('div');
+                        newMessage.classList.add('message', message.sender_id == {{ user.id }} ? 'sent' : 'received');
+                        newMessage.innerHTML = `<strong>${message.sender_id == {{ user.id }} ? 'Вы' : '{{ creator.login if creator else "" }}'}:</strong> ${message.content} <span class="timestamp">${message.timestamp}</span>`;
+                        if (message.file_url) {
+                            newMessage.innerHTML += `<br><a href="${message.file_url}" target="_blank">Скачать файл</a>`;
+                        }
+                        messages.appendChild(newMessage);
+                    });
+                    messages.scrollTop = messages.scrollHeight;
+                })
+                .catch(error => console.error('Ошибка:', error));
+        }
+    }
+
+    if ({{ 'true' if creator else 'false' }}) {
+        setInterval(fetchMessages, 3000); // Опрос сервера каждые 3 секунды
+    }
+});
+
+function showProfile() {
+    document.getElementById('profile-modal').style.display = 'block';
+}
+
+function closeProfile() {
+    document.getElementById('profile-modal').style.display = 'none';
+}
+
+</script>
+{% endblock %}

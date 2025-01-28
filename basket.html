@@ -1,0 +1,168 @@
+<!-- templates/basket.html -->
+
+{% extends 'base.html' %}
+{% block title %}Корзина{% endblock %}
+{% block body %}
+{% include 'flesh.html' %}
+
+<div class="container" style="margin-top: 100px;">
+    <h1>Корзина</h1>
+    {% if items %}
+    <div class="basket-items">
+        {% for item in items %}
+        <div class="basket-item">
+            <div class="item-image">
+                <img style="width: 325px; height: 225px; margin-top: 20px; border-radius: 10px; margin-left: 10px; border: white 3px solid;" src="{{ url_for('static', filename='img/' + item.image_url) }}" alt="{{ item.name }} ">
+            </div>
+            <div class="item-info">
+                <h2 style="font-size: 50px; margin-left: 10px;">{{ item.name }}</h2>
+                <p style="margin-left: 10px; font-size: 70px;" >{{ item.price }} руб.</p>
+                <p style="margin-left: 78%; font-size: 20px;">{{ item_counts[item.id] }} шт.</p>
+                <div class="item-actions">
+                    <form action="{{ url_for('user.update_basket', item_id=item.id) }}" method="post" class="action-form-increase">
+                        {{ increase_form.hidden_tag() }} {# Добавляем hidden_tag для защиты CSRF #}
+                        {{ increase_form.submit() }} {# Рендерим кнопку "increase" #}
+                    </form>
+                    <form action="{{ url_for('user.update_basket', item_id=item.id) }}" method="post" class="action-form-decrease">
+                        {{ decrease_form.hidden_tag() }} {# Добавляем hidden_tag для защиты CSRF #}
+                        {{ decrease_form.submit() }} {# Рендерим кнопку "decrease" #}
+                    </form>
+                    <form action="{{ url_for('user.remove_from_basket', item_id=item.id) }}" method="post" class="action-form">
+                        {{ remove_form.hidden_tag() }} {# Добавляем hidden_tag для защиты CSRF #}
+                        {{ remove_form.submit() }} {# Рендерим кнопку "remove" #}
+                    </form>
+                    <form action="{{ url_for('user.pay', item_id=item.id) }}" method="get" class="action-form-pay">
+                        <button type="submit" class="btn btn-primary" style="margin-top: -250px;width: 100%; background-color: rgb(0, 255, 4);">Оплатить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>Ваша корзина пуста.</p>
+    {% endif %}
+</div>
+
+<style>
+/* static/css/styles.css */
+
+@font-face {
+    font-family: 'Righteous'; /* Название семейства, которое будешь использовать */
+    src: url('{{url_for("static", filename="fonts/ofont.ru_Uncage.ttf")}}') format('truetype'); /* Путь к файлу шрифта */
+    font-weight: normal; /* Укажи weight, если он отличается от normal (400) */
+    font-style: normal; /* Укажи style, если он отличается от normal */
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: 'Righteous', sans-serif; /* Используй название семейства */
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.basket-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.basket-item {
+    display: flex;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Изменено значение на 25px */
+}
+
+.item-image {
+    width: 30%;
+}
+
+.item-image img {
+    width: 100%;
+    height: auto;
+}
+
+.item-info {
+    width: 70%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.item-info h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.item-info p {
+    margin: 5px 0;
+}
+
+.item-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.action-form {
+    width: 25%;
+    margin-bottom: 5px; 
+    margin-left: 70%;
+}
+
+.action-form-increase {
+    width: 25%;
+    margin-bottom: 5px; 
+    margin-left: 70%;
+    margin-top: -20%;
+}
+
+.action-form-decrease {
+    width: 25%;
+    margin-bottom: 5px; 
+    margin-left: 70%;
+    margin-top: -4px;
+}
+
+.action-form-pay {
+    width: 25%;
+    margin-bottom: 5px; 
+    margin-left: 70%;
+    margin-top: -4px;
+}
+
+.btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 48%;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+    width: 100%;
+}
+</style>
+{% endblock %}

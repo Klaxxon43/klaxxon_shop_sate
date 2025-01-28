@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}
+Регистрация
+{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+{% endblock %}
+{% block body %}
+{% include 'flesh.html' %}
+<h1 style="margin-top: 100px; margin-left: 45%;" >{{ self.title() }}</h1>
+{% block content %} {% endblock %}
+<div class="form-container" style="margin-left: 42%;">
+    <div class="registration-form">
+        <form method="post" enctype="multipart/form-data" class="form-control d-flex flex-column gap-2">
+            {{ form.csrf_token }}
+            {{ form.login(class='form-control', placeholder='Логин') }}
+            {% if form.login.errors %}
+                <div class="invalid-feedback" style="display: block!important;">
+                    {% for error in form.login.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {{ form.email(class='form-control', placeholder='Почта') }}
+            {{ form.password(class='form-control', placeholder='Пароль') }}
+            {{ form.confirm_password(class='form-control', placeholder='Повтори пароль') }}
+            {{ form.image_url(class='form-control', placeholder='Фотография профиля ') }}
+            {{ form.submit(class='btn btn-success') }}
+        </form>
+    </div>
+</div>
+
+<style>
+    @font-face {
+font-family: 'Righteous'; /* Название семейства, которое будешь использовать */
+src: url('{{url_for("static", filename="fonts/ofont.ru_Uncage.ttf")}}') format('truetype'); /* Путь к файлу шрифта */
+font-weight: normal; /* Укажи weight, если он отличается от normal (400) */
+font-style: normal; /* Укажи style, если он отличается от normal */
+}
+
+body {
+    font-family: 'Righteous', sans-serif; /* Используй название семейства */
+} 
+</style>
+
+{% endblock %}

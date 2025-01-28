@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block body %}
+{% include 'flesh.html' %}
+<h1 style="margin-top: 100px;">{{ self.title() }}</h1>
+<h1 class="text1" >текст 1</h1>
+<h1>текст 2</h1>
+{% block content %} 
+{% endblock %}
+
+<h2 style="font-family: '.Stage_Wanders.ttf'; color: green; font-size: 50px;" >this is text</h2>
+<script>
+    // document.write("JS ask hello");
+    const bodyElement = document.body;
+    const first = bodyElement.firstChild;
+    const last = bodyElement.lastChild;
+    const all = bodyElement.childNodes;
+    // console.log(first, last, all);
+    for (let node of all) {
+        // console.log(node);
+    }
+    const childrens = bodyElement.children
+    // console.log(childrens);
+
+    const elemdOne = bodyElement.querySelectorAll('h1'); // ищем обьекст с html тэгом. h1 - обьект, который ищем. если ищем например dev, то ставим перед названием точку. 
+    const elemdTwo = bodyElement.querySelector('h1.text1'); // ищем обьекст h1 с классом text1. 
+    // если нужно несколько классов, то указываем через запятую - результат будет получен в виде списка. 
+    // если указать без запятой, то будем искать элемент со вторым классом, вложенным в первый.
+    // можно находить ещё по id - bodyElement.querySelector('#id'); ID ЧЕРЕЗ # ПИШЕМ
+    // можно находить по атрибуту - bodyElement.querySelector('[name="name"]'); name - атрибут, который ищем.
+    // усли указать после закрытия скобки [N], то будем искать элемент N в списке.
+    const elem1 = document.getElementById('id'); // ищем элемент по id
+    const elem2 = document.getElementsByTagName('h2'); // ищем элемент по тэгу
+    const elem3 = document.getElementsByClassName('text1'); // ищем элемент по классу
+    const elem4 = document.getElementsByName('name'); // ищем элемент по атрибуту
+    const elem5 = document.getElementsByTagName('h1'); // ищем элемент по тэгу
+    // .getElement... выводит актуальную информацию, а querySelector - на момент вызова 
+    const textElementContent = elemdTwo.innerHTML; 
+    console.log(textElementContent, elem3); 
+    elemdTwo.innerHTML = '<span style="color: yellow ">new text </span>'; // изменяем текст
+    console.log(elemdTwo.innerHTML) //получаем новый текст
+    console.log(elemdTwo.textContent); //получаем только текст, без тэгов
+    const div = document.createElement('div'); // создаем новый элемент
+    div.innerHTML = '<h1>НОВЫЙ ПРЕНОВЫЙ ТЕКСТ</h1>'; // изменяем текст
+    console.log(div)
+    div.after(elemdTwo); // добавляем элемент перед текстом 
+    const parentElement = elemdTwo.parentNode; // Получаем родительский элемент
+    parentElement.insertBefore(div, elemdTwo.nextSibling); 
+</script>
+
+<style>
+    @font-face {
+font-family: 'Righteous'; /* Название семейства, которое будешь использовать */
+src: url('{{url_for("static", filename="fonts/ofont.ru_Uncage.ttf")}}') format('truetype'); /* Путь к файлу шрифта */
+font-weight: normal; /* Укажи weight, если он отличается от normal (400) */
+font-style: normal; /* Укажи style, если он отличается от normal */
+}
+
+body {
+    font-family: 'Righteous', sans-serif; /* Используй название семейства */
+} 
+</style>
+{% endblock %} 

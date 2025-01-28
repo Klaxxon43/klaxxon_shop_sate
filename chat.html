@@ -1,0 +1,140 @@
+<!-- templates/chat.html -->
+{% extends 'base.html' %}
+{% block title %}Чат{% endblock %}
+{% block body %}
+{% include 'flesh.html' %}
+<div class="container" style="margin-top: 100px;">
+    <h1>Чат с {{ creator.login }}</h1>
+    <div class="chat-box">
+        <div class="messages" id="messages">
+            {% for message in messages %}
+            <div class="message {% if message.sender_id == user.id %}sent{% else %}received{% endif %}">
+                <strong>{{ message.sender.login if message.sender_id == user.id else creator.login }}:</strong> {{ message.content }}
+                <span class="timestamp">{{ message.timestamp.strftime('%Y-%m-%d %H:%M') }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        <form id="chat-form">
+            <input type="text" id="message-input" placeholder="Введите сообщение...">
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </form>
+    </div>
+</div>
+<style>
+/* static/css/styles.css */
+@font-face {
+    font-family: 'Righteous'; /* Название семейства, которое будешь использовать */
+    src: url('{{url_for("static", filename="fonts/ofont.ru_Uncage.ttf")}}') format('truetype'); /* Путь к файлу шрифта */
+    font-weight: normal; /* Укажи weight, если он отличается от normal (400) */
+    font-style: normal; /* Укажи style, если он отличается от normal */
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: 'Righteous', sans-serif; /* Используй название семейства */
+}
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.chat-box {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.messages {
+    height: 300px;
+    overflow-y: scroll;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+.message {
+    margin-bottom: 10px;
+}
+.message.sent {
+    text-align: right;
+}
+.message.received {
+    text-align: left;
+}
+.timestamp {
+    font-size: 0.8em;
+    color: #888;
+}
+#chat-form {
+    display: flex;
+}
+#message-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+</style>
+<script>
+document.getElementById('chat-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const messageInput = document.getElementById('message-input');
+    const message = messageInput.value;
+    if (message.trim() !== '') {
+        fetch('{{ url_for("user.send_message") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                receiver_id: {{ creator.id }},
+                content: message
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const messages = document.getElementById('messages');
+            const newMessage = document.createElement('div');
+            newMessage.classList.add('message', 'sent');
+            newMessage.innerHTML = `<strong>Вы:</strong> ${data.content} <span class="timestamp">${data.timestamp}</span>`;
+            messages.appendChild(newMessage);
+            messages.scrollTop = messages.scrollHeight;
+            messageInput.value = '';
+        })
+        .catch(error => console.error('Ошибка:', error));
+    }
+});
+
+function fetchMessages() {
+    fetch('{{ url_for("user.get_messages", creator_id=creator.id) }}')
+        .then(response => response.json())
+        .then(data => {
+            const messages = document.getElementById('messages');
+            messages.innerHTML = '';
+            data.forEach(message => {
+                const newMessage = document.createElement('div');
+                newMessage.classList.add('message', message.sender_id == {{ user.id }} ? 'sent' : 'received');
+                newMessage.innerHTML = `<strong>${message.sender_id == {{ user.id }} ? 'Вы' : '{{ creator.login }}'}:</strong> ${message.content} <span class="timestamp">${message.timestamp}</span>`;
+                messages.appendChild(newMessage);
+            });
+            messages.scrollTop = messages.scrollHeight;
+        })
+        .catch(error => console.error('Ошибка:', error));
+}
+
+setInterval(fetchMessages, 3000); 
+</script>
+{% endblock %}
