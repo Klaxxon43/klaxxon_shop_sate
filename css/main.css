@@ -1,0 +1,261 @@
+body {
+  margin: 0;
+  padding: 0;
+  /* background-color: #77ff00; */
+  animation: gradientAnimation 15s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% { background-color: #f84a7b; }
+  12.5% { background-color: #e728f1; } /* Добавлен промежуточный цвет */
+  25% { background-color: #d505f5; }
+  37.5% { background-color: #b104eb; } /* Добавлен промежуточный цвет */
+  50% { background-color: #8505f6; }
+  62.5% { background-color: #b104eb; } /* Добавлен промежуточный цвет */
+  75% { background-color: #d505f5; }
+  87.5% { background-color: #e728f1; } /* Добавлен промежуточный цвет */
+  100% { background-color: #f84a7b; }
+}
+
+
+
+
+*,
+*::before,
+*:after {
+    box-sizing: border-box;
+}
+
+header {
+  top: -25px; /* Прикрепляем к верху */
+  z-index: 10;
+  box-shadow: 0 5px 25px rgb(0 0 0 / 15%);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  animation: headerAnimation 15s ease infinite;
+}
+
+header > * { /* Центрируем текст внутри элементов header */
+  text-align: center;
+}
+
+
+@keyframes headerAnimation {
+  0% { background-color: #f84a7b; } /* Тот же начальный цвет */
+  12.5% { background-color: #e728f1; }
+  25% { background-color: #d505f5; }
+  37.5% { background-color: #b104eb; }
+  50% { background-color: #8505f6; } /* Центральный цвет остается тем же */
+  62.5% { background-color: #b104eb; } 
+  75% { background-color: #d505f5; }
+  87.5% { background-color: #e728f1; }
+  100% { background-color: #f84a7b; } /* Тот же конечный цвет */
+}
+
+
+footer {
+  bottom: 0; /* Прикрепляем footer к низу */
+  left: 0; /* Убедитесь, что footer прикреплен к левому краю */
+  padding: 20px;
+  padding-top: 0;
+  z-index: 10;
+  background: linear-gradient(135deg, #c6cfef, #ceacf8);
+  box-shadow: 0 5px 25px rgb(0 0 0 / 15%);
+  width: 100%;
+  display: flex;
+  align-items: center; /* Вертикальное центрирование, если нужно */
+  justify-content: space-between; /* Горизонтальное распределение, если нужно */
+ /* Уберите flex-direction: column, если хотите горизонтальное расположение */
+}
+
+footer > * { /* Центрируем текст внутри элементов footer */
+  text-align: center;
+}
+
+
+.col-md-3 text-end {
+  left: 30px;
+}
+
+
+
+
+.page {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content {
+    max-width: 100%;
+    margin: 9 auto;
+    padding:  40px 20px;
+
+    flex: 1 1 auto;
+}
+
+.header__img {
+    height: 48px;
+    width: 48px;
+}
+
+/* posts */
+.row {
+    padding: 50px 0;
+  }
+  .seperator {
+    margin-bottom: 30px;
+    width: 35px;
+    height: 3px;
+    background: #777;
+    border: none;
+  }
+  .title {
+    text-align: center;
+  }
+  .title .row {
+    padding: 50px 0 0;
+  }
+  .title h1 {
+    text-transform: uppercase;
+  }
+  .title .seperator {
+    margin: 0 auto 10px;
+  }
+  .item {
+    position: relative;
+    margin-bottom: 30px;
+    min-height: 1px;
+    float: left;
+    -webkit-box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 5px 25px rgb(0,0,0,0.15);    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  .item .item-in {
+    background: #fff;
+    padding: 40px;
+    position: relative;
+  }
+  .item .item-in:hover:before {
+    width: 100%;
+  }
+  .item .item-in::before {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    height: 2px;
+    width: 0%;
+    background: #333333;
+    right: 0px;
+    -webkit-transition: width 0.4s;
+    transition: width 0.4s;
+  }
+  .item h4 {
+    font-size: 18px;
+    margin-top: 25px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .item p {
+    font-size: 12px;
+  }
+  .item a {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #666666;
+    margin-top: 10px;
+  }
+  .item a i {
+    opacity: 0;
+    padding-left: 0px;
+    transition: 0.4s;
+    font-size: 24px;
+    display: inline-block;
+    top: 5px;
+    position: relative;
+  }
+  .item a:hover {
+    text-decoration: none;
+  }
+  .item a:hover i {
+    padding-left: 10px;
+    opacity: 1;
+    font-weight: 300;
+  }
+  
+
+.post-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 5px 25px rgb(0,0,0,0.15);    -webkit-tap-highlight-color: transparent;
+    -webkit-box-orient: vertical;
+  }
+
+.nav-link.active {
+    position: relative;
+    color: #000; /* Цвет текста активной вкладки */
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px; /* Расстояние от текста до полоски */
+    width: 30px; /* Длина полоски */
+    height: 3px; /* Толщина полоски */
+    background-color: #000; /* Цвет полоски */
+
+
+}.table-container {
+  max-height: 400px; /* Установите нужную высоту */
+  overflow-y: auto;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.schedule-table th, .schedule-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.schedule-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.schedule-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.schedule-table tr:hover {
+  background-color: #ddd;
+}
+
+.editable {
+  cursor: pointer;
+}
+
+.editable-active {
+  background-color: #ffeb3b;
+}
+
+#edit-icon {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
