@@ -1,0 +1,181 @@
+/* static/css/styles.css */
+@font-face {
+    font-family: 'Righteous'; /* Название семейства, которое будешь использовать */
+    src: url('{{url_for("static", filename="fonts/ofont.ru_Uncage.ttf")}}') format('truetype'); /* Путь к файлу шрифта */
+    font-weight: normal; /* Укажи weight, если он отличается от normal (400) */
+    font-style: normal; /* Укажи style, если он отличается от normal */
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: 'Righteous', sans-serif; /* Используй название семейства */
+}
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.chat-list {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.chat-list ul {
+    list-style: none;
+    padding: 0;
+}
+.chat-list li {
+    margin-bottom: 10px;
+}
+.chat-list a {
+    text-decoration: none;
+    color: #007bff;
+}
+.chat-list li.active {
+    background-color: #f8f9fa;
+}
+.chat-list li.active a {
+    font-weight: bold;
+    color: #0056b3;
+}
+.chat-header {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+.profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.profile-name {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.chat-box {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.messages {
+    height: 300px;
+    overflow-y: scroll;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+.message {
+    margin-bottom: 10px;
+    word-wrap: break-word;
+    padding: 10px;
+    border-radius: 5px;
+}
+.message.sent {
+    text-align: right;
+    background-color: #e1ffc7;
+    margin-left: 10px; /* Сдвиг на 10 пикселей */
+}
+.message.received {
+    text-align: left;
+    background-color: #f1f0f0;
+    margin-right: 10px; /* Сдвиг на 10 пикселей */
+}
+.timestamp {
+    font-size: 0.8em;
+    color: #888;
+}
+#chat-form {
+    display: flex;
+    flex-direction: column;
+}
+#message-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+#file-input {
+    margin-bottom: 10px;
+}
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.profile-picture-large {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 20px;
+}
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+    }
+    .chat-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .profile-picture {
+        margin-bottom: 10px;
+    }
+    .chat-box {
+        padding: 10px;
+    }
+    .messages {
+        height: 200px;
+    }
+    #message-input, #file-input {
+        width: 100%;
+    }
+    .btn-primary {
+        width: 100%;
+    }
+}
