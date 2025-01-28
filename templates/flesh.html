@@ -1,0 +1,60 @@
+{% with messages = get_flashed_messages(with_categories=true) %}
+<div style="margin-top: 100px;" class="flash-container">
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <style>
+.flash-container {
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Центрирование */
+  z-index: 9999;
+}
+
+.alert {
+  text-align: center;
+  padding: 20px;
+  border-radius: 40px;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  opacity: 1;
+  transform: translateY(0);
+  /* ... другие стили ... */
+}
+
+.alert.fade-out { /* ИСПРАВЛЕНО: Класс fade-out на английском */
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+
+        @font-face {
+    font-family: 'Righteous'; /* Название семейства, которое будешь использовать */
+    src: url('{{url_for("static", filename="fonts/ofont.ru_Uncage.ttf")}}') format('truetype'); /* Путь к файлу шрифта */
+    font-weight: normal; /* Укажи weight, если он отличается от normal (400) */
+    font-style: normal; /* Укажи style, если он отличается от normal */
+}
+
+    body {
+        font-family: 'Righteous', sans-serif; /* Используй название семейства */
+    }
+
+    </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const flashMessages = document.querySelectorAll('.alert');
+      flashMessages.forEach(function(message) {
+        setTimeout(function() {
+          message.classList.add('fade-out'); // ИСПРАВЛЕНО: Используем класс fade-out
+          setTimeout(function() {
+            message.style.display = 'none';
+          }, 500);
+        }, 3000);
+      });
+    });
+  </script>
+  </div>

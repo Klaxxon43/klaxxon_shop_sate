@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}
+Магазин
+{% endblock %}
+{% block style %}
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}"> -->
+{% endblock %}
+{% block body %}
+{% include 'flesh.html' %}
+<h1 style="margin-left: 45%; font-size: 50px; font-weight: bold; margin-top: 100px;">Каталог</h1>
+{% block content %} {% endblock %}
+<div class="shop" >
+    <div class="container">
+        {% for item in items %} 
+        {% if item.creator_id != users.id %}
+        <a href="{{ url_for('user.item_info', item_id=item.id) }}" class="item-link">
+            <div class="item">
+                <div class="item-card">
+                    <div class="square" id="item" style="background-image: url('{{ url_for('static', filename='img/' + item.image_url) }}');" alt="{{ item.name }}"></div>
+                    <h2 class="price">{{ item.price }} Р</h2>
+                    <h1 class="title">{{ item.name }}</h1>
+                </div>
+            </div>
+        </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+
+<style>@font-face {
+    font-family: 'Righteous';
+    src: url('{{url_for("static", filename="fonts/ofont.ru_Uncage.ttf")}}') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.item-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.shop {
+    overflow-x: auto;
+    width: 100%;
+    font-family: 'Righteous', sans-serif;
+}
+
+.container {
+    display: grid; /* Используем Grid Layout */
+    grid-template-columns: repeat(4, 1fr); /* 4 колонки в строке */
+    gap: 20px; /* Расстояние между элементами */
+    padding: 20px;
+    justify-content: flex-start;
+}
+
+.item {
+    display: flex; /* Оставляем flex для внутреннего содержимого item (если нужно) */
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+    /* width: auto; Удалите или закомментируйте width: auto; для item, если используете Grid Layout */
+}
+
+
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: repeat(2, 1fr); /* 2 колонки на мобильных */
+    }
+    .item {
+        flex: 1 0 calc(50% - 20px); /* Можно вернуть flex для мобильных, если нужно */
+    }
+}
+
+.square {
+    width: 250px;
+    height: 175px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 5%;
+    background-color: #ffc87c;
+    border: white 3px solid;
+    cursor: pointer;
+}
+
+.price {
+    color: rgb(16, 215, 2);
+    font-weight: 800;
+}
+
+.title {
+    color: rgb(0, 0, 0);
+    margin-top: -10px;
+}
+</style>
+
+
+
+</div>
+{% endblock %}

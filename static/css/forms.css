@@ -1,0 +1,86 @@
+@font-face {
+    font-family: 'Righteous'; /* Название семейства, которое будешь использовать */
+    src: url('{{url_for("static", filename="fonts/ofont.ru_Uncage.ttf")}}') format('truetype'); /* Путь к файлу шрифта */
+    font-weight: normal; /* Укажи weight, если он отличается от normal (400) */
+    font-style: normal; /* Укажи style, если он отличается от normal */
+}
+
+body {
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    animation: gradientAnimation 15s ease infinite;
+    font-family: 'Righteous', sans-serif; /* Используй название семейства */
+}
+
+@keyframes gradientAnimation {
+    0% { background-color: #f84a7b; }
+    12.5% { background-color: #e728f1; }
+    25% { background-color: #d505f5; }
+    37.5% { background-color: #b104eb; }
+    50% { background-color: #8505f6; }
+    62.5% { background-color: #b104eb; }
+    75% { background-color: #d505f5; }
+    87.5% { background-color: #e728f1; }
+    100% { background-color: #f84a7b; }
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 40%;
+    padding: 2%;
+    background: white;
+    border-radius: 1%;
+    box-shadow: 0 0.4% 0.8% rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-in-out;
+}
+
+h2 {
+    margin-bottom: 2%;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 1%;
+    margin-bottom: 1%;
+    border: 0.1% solid #ccc;
+    border-radius: 0.5%;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 1%;
+    border: none;
+    border-radius: 0.5%;
+    background: #6e8efb;
+    color: white;
+    font-size: 1.6%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #a777e3;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-2%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.page {
+    width: 150vh;
+}
